@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{B808C485-2477-4D50-8E00-9662DD0DFC64}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B0046ECF-57AA-44D4-9F18-4F5097B93EAA}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{AEE2D17D-28D8-4495-A62F-0F8E90B6CCD4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B808C485-2477-4D50-8E00-9662DD0DFC64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B808C485-2477-4D50-8E00-9662DD0DFC64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B808C485-2477-4D50-8E00-9662DD0DFC64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B808C485-2477-4D50-8E00-9662DD0DFC64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEE2D17D-28D8-4495-A62F-0F8E90B6CCD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEE2D17D-28D8-4495-A62F-0F8E90B6CCD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEE2D17D-28D8-4495-A62F-0F8E90B6CCD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEE2D17D-28D8-4495-A62F-0F8E90B6CCD4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
