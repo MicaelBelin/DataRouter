@@ -5,28 +5,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Xintric.DataRouter.Core.Lobby.Packet
+namespace Xintric.DataRouter.Core.Session.Packet
 {
-    class CreateStreamResponse : Connection.IResponse
+    class UnfriendCommand : Connection.ICommand
     {
-        public long StreamId { get; private set; }
+        public IAgent Agent { get; private set; }
 
-
-        public CreateStreamResponse(long streamid)
+        public UnfriendCommand(IAgent agent)
         {
-            StreamId = streamid;
+            Agent = agent;
         }
 
         public Connection.Packet.Wrapping Wrapped
         {
-
             get
             {
                 using (var stream = new MemoryStream())
                 using (var writer = new BinaryWriter(stream))
                 {
-                    writer.Write(StreamId);
-                    return new Connection.Packet.Wrapping(typeof(CreateStreamResponse).Name, stream.ToArray());
+                    writer.Write(Agent.ToArray());
+                    return new Connection.Packet.Wrapping(typeof(UnfriendCommand).Name, stream.ToArray());
                 }
             }
         }
@@ -36,15 +34,14 @@ namespace Xintric.DataRouter.Core.Lobby.Packet
         {
             public string Type
             {
-                get { return typeof(CreateStreamResponse).Name; }
+                get { return typeof(UnfriendCommand).Name; }
             }
 
             public Connection.IPacket Create(byte[] data)
             {
                 using (var stream = new MemoryStream(data))
-                using (var reader = new BinaryReader(stream))
                 {
-                    return new CreateStreamResponse(reader.ReadInt64());
+                    return new UnfriendCommand(Core.Agent.Implementation.FromStream(stream));
                 }
             }
         }

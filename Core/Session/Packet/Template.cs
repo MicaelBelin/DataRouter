@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Xintric.DataRouter.Core.Lobby.Packet
+namespace Xintric.DataRouter.Core.Session.Packet
 {
     /*
         class Template : Connection.IRequest

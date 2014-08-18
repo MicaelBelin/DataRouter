@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Xintric.DataRouter.Core.Lobby.FriendRequestListener
+namespace Xintric.DataRouter.Core.OwnedSession
 {
-    public interface IFriendRequest
+    public interface IHeader
     {
     }
 }

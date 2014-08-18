@@ -49,29 +49,29 @@
     <Compile Include="Connection\Packet\Wrapping.cs" />
     <Compile Include="Connection\Stream\DataPacket.cs" />
     <Compile Include="IConnection.cs" />
-    <Compile Include="ILobby.cs" />
-    <Compile Include="IPacketHeader.cs" />
     <Compile Include="ISession.cs" />
-    <Compile Include="ISessionHeader.cs" />
+    <Compile Include="OwnedSession\IHeader.cs" />
+    <Compile Include="Forum\IPacketHeader.cs" />
+    <Compile Include="Forum\IGuest.cs" />
     <Compile Include="IAgent.cs" />
-    <Compile Include="Lobby\FriendRequestListener\IFriendRequest.cs" />
-    <Compile Include="Lobby\IFriendRequestListener.cs" />
-    <Compile Include="Lobby\Lobby_Implementation.cs" />
-    <Compile Include="Lobby\IStreamRequest.cs" />
-    <Compile Include="Lobby\Packet\CreateStreamRequest.cs" />
-    <Compile Include="Lobby\Packet\CreateStreamResponse.cs" />
-    <Compile Include="Lobby\Packet\HandshakeRequest.cs" />
-    <Compile Include="Lobby\Packet\HandshakeResponse.cs" />
-    <Compile Include="Lobby\Packet\InvitedToSession.cs" />
-    <Compile Include="Lobby\Packet\ListFriendsRequest.cs" />
-    <Compile Include="Lobby\Packet\ListFriendsResponse.cs" />
-    <Compile Include="Lobby\Packet\Template.cs" />
-    <Compile Include="Lobby\Packet\UnfriendCommand.cs" />
+    <Compile Include="Session\FriendRequestListener\IFriendRequest.cs" />
+    <Compile Include="Session\IFriendRequestListener.cs" />
+    <Compile Include="Session\Lobby_Implementation.cs" />
+    <Compile Include="Session\IStreamRequest.cs" />
+    <Compile Include="Session\Packet\CreateStreamRequest.cs" />
+    <Compile Include="Session\Packet\CreateStreamResponse.cs" />
+    <Compile Include="Session\Packet\HandshakeRequest.cs" />
+    <Compile Include="Session\Packet\HandshakeResponse.cs" />
+    <Compile Include="Session\Packet\ListFriendsRequest.cs" />
+    <Compile Include="Session\Packet\ListFriendsResponse.cs" />
+    <Compile Include="Session\Packet\Template.cs" />
+    <Compile Include="Session\Packet\UnfriendCommand.cs" />
     <Compile Include="Connection\Stream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SessionHeader\SessionHeader_Static.cs" />
     <Compile Include="Agent\Agent_Implementation.cs" />
+    <Compile Include="Forum\IOwner.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

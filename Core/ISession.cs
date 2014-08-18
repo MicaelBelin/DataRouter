@@ -1,23 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Xintric.DataRouter.Core
 {
-    public interface ISession : ISessionHeader, IDisposable
+    public interface ISession
     {
+        Task<IAgent> HandShakeAsync(string passphrase, TimeSpan timeout);
 
-        IEnumerable<IAgent> Users { get; }
-        void Invite(IAgent agent);
-        void Leave();
+        Task<Session.IFriendRequestListener> OpenFriendRequestListener(string channelname);
+        Task<IAgent> SendFriendRequest(string channelname);
 
-        Task<bool> SendPacketAsync(string header, byte[] data, TimeSpan lifetime, Action<int> progresscallback = null);
 
-        IEnumerable<IPacketHeader> AvailablePackets { get; }
+        Task<IEnumerable<IAgent>> Friends { get; }
+        Task Unfriend(IAgent agent);
 
-        event Action<IPacketHeader> OnPacketAvailable;
+        Task<Stream> CreateStream(IAgent endpoint, TimeSpan timeout);
+        event Action<Session.IStreamRequest> OnStreamRequest;
+
+
+
+/*
+        Task<IEnumerable<Session.IHeader>> Sessions { get; }
+        event Action<Session.IHeader> OnInvitedToSession;
+
+
+        Task<IEnumerable<OwnedSession.IHeader>> MySessions {get;}
+        Task<IOwnedSession> Create(string name);
+*/
+        
 
     }
 }

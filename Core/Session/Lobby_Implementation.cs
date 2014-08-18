@@ -4,19 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Xintric.DataRouter.Core.Lobby
+namespace Xintric.DataRouter.Core.Session
 {
-    class Implementation : ILobby
+    class Implementation
     {
         public Implementation(IConnection connection)
         {
             Connection = connection;
 
-            Connection.RegisterOnCommand<Packet.InvitedToSession>(invitation =>
-                {
-                    if (OnInvited != null) OnInvited(invitation.SessionHeader);
-                    return CommandFilterResult.Consume;
-                });
         }
 
         public IConnection Connection { get; private set; }
@@ -57,34 +52,6 @@ namespace Xintric.DataRouter.Core.Lobby
 
 
 
-        public Task<IEnumerable<ISessionHeader>> Sessions
-        {
-            get { throw new NotImplementedException(); }
-        }
 
-        public Task<ISession> Create(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ISession> Join(ISessionHeader session)
-        {
-            throw new NotImplementedException();
-        }
-
-        public event Action<ISessionHeader> OnInvited;
-
-
-
-
-        public Task<IFriendRequestListener> OpenFriendRequestListener(string channelname)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IAgent> SendFriendRequest(string channelname)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

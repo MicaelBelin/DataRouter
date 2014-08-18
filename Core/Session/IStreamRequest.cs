@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Xintric.DataRouter.Core.Lobby
+namespace Xintric.DataRouter.Core.Session
 {
     public interface IStreamRequest
     {
         IAgent Agent { get; }
         Stream Accept();
         void Ignore();
-        TimeSpan EstimatedTimeout { get; }
+        DateTime Expiry { get; }
     }
 }
