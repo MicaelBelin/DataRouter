@@ -18,22 +18,19 @@ namespace Xintric.DataRouter.Core.Session.Packet
             Timeout = timeout;
         }
 
-        public Connection.Packet.Wrapping Wrapped
+        public byte[] ToByteArray()
         {
-            get
+            using (var stream = new MemoryStream())
+            using (var writer = new BinaryWriter(stream))
             {
-                using (var stream = new MemoryStream())
-                using (var writer = new BinaryWriter(stream))
-                {
-                    writer.Write(Agent.ToArray());
-                    writer.Write(Timeout.Ticks);
-                    return new Connection.Packet.Wrapping(typeof(CreateStreamRequest).Name, stream.ToArray());
-                }
+                writer.Write(Agent.ToArray());
+                writer.Write(Timeout.Ticks);
+                return stream.ToArray();
             }
         }
 
 
-        public class Factory : Connection.Packet.IFactory
+        public class FactoryImpl : Connection.Packet.IFactory
         {
             public string Type
             {
@@ -49,5 +46,7 @@ namespace Xintric.DataRouter.Core.Session.Packet
                 }
             }
         }
+        static FactoryImpl factory = new FactoryImpl();
+        public Connection.Packet.IFactory Factory { get { return factory; } }
     }
 }

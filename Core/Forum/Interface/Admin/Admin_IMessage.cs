@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Xintric.DataRouter.Core.OwnedSession
+namespace Xintric.DataRouter.Core.Forum.Interface.Admin
 {
-    public interface IHeader
+    public interface IMessage : Forum.IMessage
     {
+        void Remove();
     }
 }

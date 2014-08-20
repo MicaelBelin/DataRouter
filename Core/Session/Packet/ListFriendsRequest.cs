@@ -9,15 +9,17 @@ namespace Xintric.DataRouter.Core.Session.Packet
 {
     class ListFriendsRequest : Connection.IRequest
     {
-        public Connection.Packet.Wrapping Wrapped
+
+        public byte[] ToByteArray()
         {
-            get {
-                return new Connection.Packet.Wrapping(typeof(ListFriendsRequest).Name, new byte[] { });
+            using (var stream = new MemoryStream())
+            using (var writer = new BinaryWriter(stream,Encoding.UTF8,true))
+            {
+                return stream.ToArray();
             }
-        }
+        }            
 
-
-        public class Factory : Connection.Packet.IFactory
+        public class FactoryImpl : Connection.Packet.IFactory
         {
             public string Type
             {
@@ -33,5 +35,7 @@ namespace Xintric.DataRouter.Core.Session.Packet
                 }
             }
         }
+        static FactoryImpl factory = new FactoryImpl();
+        public Connection.Packet.IFactory Factory { get { return factory; } }
     }
 }

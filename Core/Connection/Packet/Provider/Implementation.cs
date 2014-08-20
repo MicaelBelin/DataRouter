@@ -16,10 +16,11 @@ namespace Xintric.DataRouter.Core.Connection.Packet.Provider
             factories[factory.Type] = factory;
         }
 
-        public IPacket Create(byte[] data)
+        public IPacket Create(string type, byte[] data)
         {
-            var wrapping = Packet.Wrapping.FromArray(data);
-            return factories[wrapping.Type].Create(wrapping.Content);
+            return factories[type].Create(data);
         }
+
+
     }
 }

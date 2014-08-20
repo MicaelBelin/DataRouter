@@ -12,21 +12,17 @@ namespace Xintric.DataRouter.Core.Session.Packet
         public IEnumerable<IAgent> Friends { get; private set; }
 
 
-
-        public Connection.Packet.Wrapping Wrapped
+        public byte[] ToByteArray()
         {
-            get
+            using (var stream = new MemoryStream())
+            using (var writer = new BinaryWriter(stream))
             {
-                using (var stream = new MemoryStream())
-                using (var writer = new BinaryWriter(stream))
-                {
-                    return new Connection.Packet.Wrapping(typeof(ListFriendsResponse).Name, stream.ToArray() );
-                }
+                return stream.ToArray();
             }
         }
 
 
-        public class Factory : Connection.Packet.IFactory
+        public class FactoryImpl : Connection.Packet.IFactory
         {
             public string Type
             {
@@ -42,6 +38,8 @@ namespace Xintric.DataRouter.Core.Session.Packet
                 }
             }
         }
+        static FactoryImpl factory = new FactoryImpl();
+        public Connection.Packet.IFactory Factory { get { return factory; } }
 
     }
 }

@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConnectionExtensions.cs" />
+    <Compile Include="Connection\Abstract.cs" />
     <Compile Include="Connection\ICommand.cs" />
     <Compile Include="Connection\IPacket.cs" />
     <Compile Include="Connection\IRequest.cs" />
@@ -46,13 +48,17 @@
     <Compile Include="Connection\Packet\IFactory.cs" />
     <Compile Include="Connection\Packet\IProvider.cs" />
     <Compile Include="Connection\Packet\Provider\Implementation.cs" />
-    <Compile Include="Connection\Packet\Wrapping.cs" />
     <Compile Include="Connection\Stream\DataPacket.cs" />
+    <Compile Include="Forum\Interface\Admin\Admin_IMessage.cs" />
+    <Compile Include="Forum\IMessage.cs" />
+    <Compile Include="Forum\Interface\Admin\IInvitationRequest.cs" />
+    <Compile Include="Forum\Interface\Admin\IRequest.cs" />
+    <Compile Include="Forum\Interface\User\IRequest.cs" />
     <Compile Include="IConnection.cs" />
+    <Compile Include="IDownloadItem.cs" />
     <Compile Include="ISession.cs" />
-    <Compile Include="OwnedSession\IHeader.cs" />
-    <Compile Include="Forum\IPacketHeader.cs" />
-    <Compile Include="Forum\IGuest.cs" />
+    <Compile Include="Forum\Interface\User\User_IMessage.cs" />
+    <Compile Include="Forum\Interface\IUser.cs" />
     <Compile Include="IAgent.cs" />
     <Compile Include="Session\FriendRequestListener\IFriendRequest.cs" />
     <Compile Include="Session\IFriendRequestListener.cs" />
@@ -69,7 +75,8 @@
     <Compile Include="Connection\Stream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Agent\Agent_Implementation.cs" />
-    <Compile Include="Forum\IOwner.cs" />
+    <Compile Include="Forum\Interface\IAdmin.cs" />
+    <Compile Include="TaskExtensions.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

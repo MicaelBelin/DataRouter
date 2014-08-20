@@ -20,21 +20,18 @@ namespace Xintric.DataRouter.Core.Session.Packet
 
        
 
-        public Connection.Packet.Wrapping Wrapped
+        public byte[] ToByteArray()
         {
-            get 
-            { 
-                using (var ms = new MemoryStream())
-                using (var writer = new BinaryWriter(ms))
-                {
-                    writer.Write(Passphrase);
-                    writer.Write(Timeout.Ticks);
-                    return new Connection.Packet.Wrapping(typeof(HandshakeRequest).Name, ms.ToArray());
-                }
+            using (var ms = new MemoryStream())
+            using (var writer = new BinaryWriter(ms))
+            {
+                writer.Write(Passphrase);
+                writer.Write(Timeout.Ticks);
+                return ms.ToArray();
             }
         }
 
-        public class Factory : Connection.Packet.IFactory
+        public class FactoryImpl : Connection.Packet.IFactory
         {
             public string Type
             {
@@ -50,6 +47,8 @@ namespace Xintric.DataRouter.Core.Session.Packet
                 }
             }
         }
+        static FactoryImpl factory = new FactoryImpl();
+        public Connection.Packet.IFactory Factory { get { return factory; } }
 
 
     }

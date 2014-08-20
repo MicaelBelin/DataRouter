@@ -9,8 +9,6 @@ namespace Xintric.DataRouter.Core.Connection.Packet
     public interface IProvider
     {
         void RegisterFactory(Packet.IFactory factory);
-
-        IPacket Create(byte[] data);
-
+        IPacket Create(string type, byte[] data);
     }
 }

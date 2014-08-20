@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Xintric.DataRouter.Core.Session
 {
-    public interface IFriendRequestListener
+    public interface IFriendRequestListener : IDisposable
     {
         event Action<FriendRequestListener.IFriendRequest> OnFriendRequest;
-        void Close();
     }
 }

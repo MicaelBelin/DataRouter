@@ -18,7 +18,6 @@ namespace Xintric.DataRouter.Core
 
 
 
-        Task<Connection.IResponse> SendAsync(Connection.IRequest packet);
         /// <summary>
         /// Throws timeoutexception if timeout expires
         /// </summary>
@@ -26,16 +25,13 @@ namespace Xintric.DataRouter.Core
         /// <param name="timeout"></param>
         /// <returns></returns>
         Task<Connection.IResponse> SendAsync(Connection.IRequest packet, TimeSpan timeout);
-
-
         Task SendAsync(Connection.ICommand command);
-        Task SendAsync(Connection.ICommand command, TimeSpan timeout);
 
         void RegisterOnCommand(Func<Connection.ICommand, CommandFilterResult> cmd);
         void UnregisterOnCommand(Func<Connection.ICommand, CommandFilterResult> cmd);
-        void RegisterOnCommand<TCommand>(Func<TCommand, CommandFilterResult> cmd) where TCommand : Connection.ICommand;
-        void UnregisterOnCommand<TCommand>(Func<TCommand, CommandFilterResult> cmd) where TCommand : Connection.ICommand;
 
+        void RegisterOnRequest(Func<Connection.IRequest, Connection.IResponse> requesthandler);
+        void UnregisterOnRequest(Func<Connection.IRequest, Connection.IResponse> requesthandler);
 
         void RunCollector();
 

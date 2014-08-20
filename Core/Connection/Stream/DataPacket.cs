@@ -20,23 +20,20 @@ namespace Xintric.DataRouter.Core.Connection
                 Data = data;
             }
 
-            public Connection.Packet.Wrapping Wrapped
+            public byte[] ToByteArray()
             {
-                get
+                using (var stream = new MemoryStream())
+                using (var writer = new BinaryWriter(stream,Encoding.UTF8,true))
                 {
-                    using (var stream = new MemoryStream())
-                    using (var writer = new BinaryWriter(stream,Encoding.UTF8,true))
-                    {
-                        writer.Write(Id);
-                        writer.Write(Data.Length);
-                        writer.Write(Data);
-                        return new Connection.Packet.Wrapping(typeof(DataPacket).Name, stream.ToArray());
-                    }
+                    writer.Write(Id);
+                    writer.Write(Data.Length);
+                    writer.Write(Data);
+                    return stream.ToArray();
                 }
             }
 
 
-            public class Factory : Connection.Packet.IFactory
+            public class FactoryImpl : Connection.Packet.IFactory
             {
                 public string Type
                 {
@@ -54,6 +51,8 @@ namespace Xintric.DataRouter.Core.Connection
                     }
                 }
             }
+            static FactoryImpl factory = new FactoryImpl();
+            public Connection.Packet.IFactory Factory { get { return factory; } }
         }
   
     }
