@@ -13,7 +13,7 @@ namespace Xintric.DataRouter.Core
         PassOnToNext,
     }
 
-    public interface IConnection
+    public interface IConnection : IDisposable
     {
 
 

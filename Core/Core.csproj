@@ -45,6 +45,7 @@
     <Compile Include="Connection\IPacket.cs" />
     <Compile Include="Connection\IRequest.cs" />
     <Compile Include="Connection\IResponse.cs" />
+    <Compile Include="Connection\P2P.cs" />
     <Compile Include="Connection\Packet\IFactory.cs" />
     <Compile Include="Connection\Packet\IProvider.cs" />
     <Compile Include="Connection\Packet\Provider\Implementation.cs" />

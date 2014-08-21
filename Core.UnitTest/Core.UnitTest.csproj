@@ -6,7 +6,7 @@
     <ProjectGuid>{375C1DEC-60DC-4993-94AF-84A0CE2760D8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Core.UnitTest</RootNamespace>
+    <RootNamespace>Xintric.DataRouter.Core.UnitTest</RootNamespace>
     <AssemblyName>Core.UnitTest</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -55,6 +55,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestCommand.cs" />
+    <Compile Include="TestRequest.cs" />
+    <Compile Include="TestResponse.cs" />
+    <Compile Include="AbstractConnection_Unittest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">

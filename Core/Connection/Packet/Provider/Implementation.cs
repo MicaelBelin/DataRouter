@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Xintric.DataRouter.Core.Connection.Packet.Provider
 {
-    class Implementation : IProvider
+    public class Implementation : IProvider
     {
 
         Dictionary<string, IFactory> factories = new Dictionary<string, IFactory>();
