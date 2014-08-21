@@ -9,7 +9,7 @@ namespace Xintric.DataRouter.Core.Connection
 {
     public partial class Stream
     {
-        class DataPacket : Connection.ICommand
+        public class DataPacket : Connection.ICommand
         {
             public long Id { get; private set; }
             public byte[] Data { get; private set; }
@@ -51,8 +51,8 @@ namespace Xintric.DataRouter.Core.Connection
                     }
                 }
             }
-            static FactoryImpl factory = new FactoryImpl();
-            public Connection.Packet.IFactory Factory { get { return factory; } }
+            public static FactoryImpl FactoryInstance = new FactoryImpl();
+            public Connection.Packet.IFactory Factory { get { return FactoryInstance; } }
         }
   
     }

@@ -104,7 +104,6 @@ namespace Xintric.DataRouter.Core.UnitTest
             
             pair.Item2.RegisterOnCommand(cmd =>
                 {
-                    Thread.Sleep(500);
                     gotcommand.Set();
                     return CommandFilterResult.Consume;
                 });

@@ -21,6 +21,10 @@ namespace Xintric.DataRouter.Core.Connection.Packet.Provider
             return factories[type].Create(data);
         }
 
+        public void Populate()
+        {
+            RegisterFactory(Connection.Stream.DataPacket.FactoryInstance);
+        }
 
     }
 }

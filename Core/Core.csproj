@@ -50,6 +50,7 @@
     <Compile Include="Connection\Packet\IProvider.cs" />
     <Compile Include="Connection\Packet\Provider\Implementation.cs" />
     <Compile Include="Connection\Stream\DataPacket.cs" />
+    <Compile Include="Connection\Tcp.cs" />
     <Compile Include="Forum\Interface\Admin\Admin_IMessage.cs" />
     <Compile Include="Forum\IMessage.cs" />
     <Compile Include="Forum\Interface\Admin\IInvitationRequest.cs" />
