@@ -194,12 +194,12 @@ namespace Xintric.DataRouter.Core.Connection
          * int datalength;
          * byte[datalength] data;
          */ 
-        static byte[] Wrap(IPacket packet,long id, long inresponseto)
+        byte[] Wrap(IPacket packet,long id, long inresponseto)
         {
             using (var stream = new MemoryStream())
             using (var writer = new BinaryWriter(stream))
             {
-                writer.Write(packet.Factory.Type);
+                writer.Write(Provider.GetNameOf(packet));
                 var data = packet.ToByteArray();
                 writer.Write(id);
                 writer.Write(inresponseto);                

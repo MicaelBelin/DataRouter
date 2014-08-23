@@ -46,6 +46,7 @@
     <Compile Include="Connection\IRequest.cs" />
     <Compile Include="Connection\IResponse.cs" />
     <Compile Include="Connection\P2P.cs" />
+    <Compile Include="Connection\Packet\AutoGenerateFactoryAttribute.cs" />
     <Compile Include="Connection\Packet\IFactory.cs" />
     <Compile Include="Connection\Packet\IProvider.cs" />
     <Compile Include="Connection\Packet\Provider\Implementation.cs" />
@@ -65,7 +66,7 @@
     <Compile Include="IAgent.cs" />
     <Compile Include="Session\FriendRequestListener\IFriendRequest.cs" />
     <Compile Include="Session\IFriendRequestListener.cs" />
-    <Compile Include="Session\Lobby_Implementation.cs" />
+    <Compile Include="Session\Session_Implementation.cs" />
     <Compile Include="Session\IStreamRequest.cs" />
     <Compile Include="Session\Packet\CreateStreamRequest.cs" />
     <Compile Include="Session\Packet\CreateStreamResponse.cs" />

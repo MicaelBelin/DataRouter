@@ -9,6 +9,7 @@ namespace Xintric.DataRouter.Core.Connection
 {
     public partial class Stream
     {
+        [Connection.Packet.AutoGenerateFactory]
         public class DataPacket : Connection.ICommand
         {
             public long Id { get; private set; }
@@ -33,26 +34,16 @@ namespace Xintric.DataRouter.Core.Connection
             }
 
 
-            public class FactoryImpl : Connection.Packet.IFactory
+            public static Connection.IPacket FromByteArray(byte[] data)
             {
-                public string Type
+                using (var reader = new BinaryReader(new MemoryStream(data)))
                 {
-                    get { return typeof(DataPacket).Name; }
-                }
-
-                public Connection.IPacket Create(byte[] data)
-                {
-                    using (var reader = new BinaryReader(new MemoryStream(data)))
-                    {
-                        var id = reader.ReadInt64();
-                        var length = reader.ReadInt32();
-                        var bytes = reader.ReadBytes(length);
-                        return new DataPacket(id, bytes);
-                    }
+                    var id = reader.ReadInt64();
+                    var length = reader.ReadInt32();
+                    var bytes = reader.ReadBytes(length);
+                    return new DataPacket(id, bytes);
                 }
             }
-            public static FactoryImpl FactoryInstance = new FactoryImpl();
-            public Connection.Packet.IFactory Factory { get { return FactoryInstance; } }
         }
   
     }

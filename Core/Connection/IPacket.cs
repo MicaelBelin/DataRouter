@@ -8,7 +8,7 @@ namespace Xintric.DataRouter.Core.Connection
 {
     public interface IPacket
     {
-        Packet.IFactory Factory { get; }
         byte[] ToByteArray();
     }
+
 }

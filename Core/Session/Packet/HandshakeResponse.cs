@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Xintric.DataRouter.Core.Session.Packet
 {
+    [Connection.Packet.AutoGenerateFactory]
     public class HandshakeResponse : Connection.IResponse
     {
         public string Passphrase {get; private set;}
@@ -29,25 +30,15 @@ namespace Xintric.DataRouter.Core.Session.Packet
             }
         }
 
-        public class FactoryImpl : Connection.Packet.IFactory
+        public static Connection.IPacket FromByteArray(byte[] data)
         {
-            public string Type
-            {
-                get { return typeof(HandshakeResponse).Name; }
-            }
 
-            public Connection.IPacket Create(byte[] data)
+            using (var ms = new MemoryStream(data))
+            using (var reader = new BinaryReader(ms))
             {
-
-                using (var ms = new MemoryStream(data))
-                using (var reader = new BinaryReader(ms))
-                {
-                    return new HandshakeResponse(reader.ReadString(), Core.Agent.Implementation.FromStream(ms));
-                }
+                return new HandshakeResponse(reader.ReadString(), Core.Agent.Implementation.FromStream(ms));
             }
         }
-        static FactoryImpl factory = new FactoryImpl();
-        public Connection.Packet.IFactory Factory { get { return factory; } }
 
     }
 }

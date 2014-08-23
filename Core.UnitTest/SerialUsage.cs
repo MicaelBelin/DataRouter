@@ -11,7 +11,6 @@ namespace Xintric.DataRouter.Core
         void cycle()
         {
             Core.Connection.Packet.Provider.Implementation provider = new Core.Connection.Packet.Provider.Implementation();
-            provider.Populate();
 
             var pair = Connection.P2P.GeneratePair(provider);
             var Connection1 = pair.Item1;

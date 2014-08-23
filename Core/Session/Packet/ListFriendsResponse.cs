@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Xintric.DataRouter.Core.Session.Packet
 {
+    [Connection.Packet.AutoGenerateFactory]
     class ListFriendsResponse : Connection.IResponse
     {
         public IEnumerable<IAgent> Friends { get; private set; }
@@ -22,24 +23,14 @@ namespace Xintric.DataRouter.Core.Session.Packet
         }
 
 
-        public class FactoryImpl : Connection.Packet.IFactory
+        public static Connection.IPacket FromByteArray(byte[] data)
         {
-            public string Type
+            using (var stream = new MemoryStream(data))
+            using (var reader = new BinaryReader(stream))
             {
-                get { return typeof(ListFriendsResponse).Name; }
-            }
-
-            public Connection.IPacket Create(byte[] data)
-            {
-                using (var stream = new MemoryStream(data))
-                using (var reader = new BinaryReader(stream))
-                {
-                    return new ListFriendsResponse();
-                }
+                return new ListFriendsResponse();
             }
         }
-        static FactoryImpl factory = new FactoryImpl();
-        public Connection.Packet.IFactory Factory { get { return factory; } }
 
     }
 }

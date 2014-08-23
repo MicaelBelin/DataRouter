@@ -17,7 +17,6 @@ namespace Xintric.DataRouter.Core.Connection.UnitTest
     {
         public Stream_UnitTest()
         {
-            provider.Populate();
         }
 
         private TestContext testContextInstance;

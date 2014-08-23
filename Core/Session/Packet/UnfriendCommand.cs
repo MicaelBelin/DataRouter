@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Xintric.DataRouter.Core.Session.Packet
 {
+    [Connection.Packet.AutoGenerateFactory]
     class UnfriendCommand : Connection.ICommand
     {
         public IAgent Agent { get; private set; }
@@ -23,22 +24,12 @@ namespace Xintric.DataRouter.Core.Session.Packet
 
 
 
-        public class FactoryImpl : Connection.Packet.IFactory
+        public static Connection.IPacket FromByteArray(byte[] data)
         {
-            public string Type
+            using (var stream = new MemoryStream(data))
             {
-                get { return typeof(UnfriendCommand).Name; }
-            }
-
-            public Connection.IPacket Create(byte[] data)
-            {
-                using (var stream = new MemoryStream(data))
-                {
-                    return new UnfriendCommand(Core.Agent.Implementation.FromStream(stream));
-                }
+                return new UnfriendCommand(Core.Agent.Implementation.FromStream(stream));
             }
         }
-        static FactoryImpl factory = new FactoryImpl();
-        public Connection.Packet.IFactory Factory { get { return factory; } }
     }
 }

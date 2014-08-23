@@ -35,7 +35,7 @@ namespace Xintric.DataRouter.Core.UnitTest
             public class FactoryImpl : Core.Connection.Packet.IFactory
             {
 
-                public string Type
+                public string Name
                 {
                     get { return typeof(TestResponse).Name; }
                 }
@@ -47,6 +47,11 @@ namespace Xintric.DataRouter.Core.UnitTest
                     {
                         return new TestResponse(reader.ReadString());
                     }
+                }
+
+                public bool IsMine(Connection.IPacket packet)
+                {
+                    return packet is TestResponse;
                 }
             }
             public static FactoryImpl FactoryInstance = new FactoryImpl();

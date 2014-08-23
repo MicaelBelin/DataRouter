@@ -8,7 +8,16 @@ namespace Xintric.DataRouter.Core.Connection.Packet
 {
     public interface IFactory
     {
-        string Type { get; }
+        /// <summary>
+        /// Returns true if specified packet is of my creation
+        /// </summary>
+        /// <param name="packet"></param>
+        /// <returns></returns>
+        bool IsMine(IPacket packet);
+        string Name { get; }
         IPacket Create(byte[] data);
     }
+
+
+
 }

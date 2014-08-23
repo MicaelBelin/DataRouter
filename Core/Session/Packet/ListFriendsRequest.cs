@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace Xintric.DataRouter.Core.Session.Packet
 {
+
+    [Connection.Packet.AutoGenerateFactory]
     class ListFriendsRequest : Connection.IRequest
     {
 
@@ -17,25 +19,17 @@ namespace Xintric.DataRouter.Core.Session.Packet
             {
                 return stream.ToArray();
             }
-        }            
+        }
 
-        public class FactoryImpl : Connection.Packet.IFactory
+        public static Connection.IPacket FromByteArray(byte[] data)
         {
-            public string Type
+            using (var stream = new MemoryStream())
+            using (var reader = new BinaryReader(stream))
             {
-                get { return typeof(ListFriendsRequest).Name; }
-            }
-
-            public Connection.IPacket Create(byte[] data)
-            {
-                using (var stream = new MemoryStream())
-                using (var reader = new BinaryReader(stream))
-                {
-                    return new ListFriendsRequest();
-                }
+                return new ListFriendsRequest();
             }
         }
-        static FactoryImpl factory = new FactoryImpl();
-        public Connection.Packet.IFactory Factory { get { return factory; } }
+
+
     }
 }
