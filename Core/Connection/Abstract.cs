@@ -10,7 +10,16 @@ namespace Xintric.DataRouter.Core.Connection
 {
     public abstract class Abstract : IConnection
     {
+        public abstract bool IsConnected { get; }
+        public abstract event Action ConnectionClosed;
+
         protected abstract Task SendDataAsync(byte[] data);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bytestoreceive"></param>
+        /// <remarks>Should not throw if connection is closed. Just send remainind data in buffer, then return empty arrays</remarks>
+        /// <returns></returns>
         protected abstract byte[] ReceiveData(int bytestoreceive);
         public abstract void Dispose();
 
@@ -70,7 +79,10 @@ namespace Xintric.DataRouter.Core.Connection
             {
                 responsehandler.Remove(id);
             }
-            if (gotresponse) return response;
+            if (gotresponse)
+            {
+                return response;
+            }
             else
             {
                 throw new TimeoutException();
@@ -79,8 +91,8 @@ namespace Xintric.DataRouter.Core.Connection
         public Dictionary<long, Action<IResponse>> responsehandler = new Dictionary<long, Action<IResponse>>();
 
 
-        public List<Func<ICommand, CommandFilterResult>> commandfilters = new List<Func<ICommand, CommandFilterResult>>();
-        public void RegisterOnCommand(Func<ICommand, CommandFilterResult> cmd)
+        public List<Func<ICommand, Connection.Command.FilterResult>> commandfilters = new List<Func<ICommand, Connection.Command.FilterResult>>();
+        public void RegisterOnCommand(Func<ICommand, Connection.Command.FilterResult> cmd)
         {
             lock(commandfilters)
             {
@@ -88,7 +100,7 @@ namespace Xintric.DataRouter.Core.Connection
             }
         }
 
-        public void UnregisterOnCommand(Func<ICommand, CommandFilterResult> cmd)
+        public void UnregisterOnCommand(Func<ICommand, Connection.Command.FilterResult> cmd)
         {
             lock (commandfilters)
             {
@@ -114,7 +126,7 @@ namespace Xintric.DataRouter.Core.Connection
                             {
                                 try
                                 {
-                                    if (filter(command) == CommandFilterResult.Consume) break;
+                                    if (filter(command) == Connection.Command.FilterResult.Consume) break;
                                 }
                                 catch (Exception)
                                 {

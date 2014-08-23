@@ -56,11 +56,13 @@ namespace Xintric.DataRouter.Core.Connection
         {
             if (disposed) return;
             disposed = true;
+            if (IsConnected && ConnectionClosed != null) ConnectionClosed();
             lock (q)
             {
                 var tmp = q;
                 q = null;
                 if (Link != null) Link.Link = null;
+                if (Link != null && Link.ConnectionClosed != null) Link.ConnectionClosed();
                 Link = null;
                 Monitor.Pulse(tmp);
             }
@@ -70,5 +72,11 @@ namespace Xintric.DataRouter.Core.Connection
         {
             Dispose();
         }
+
+        public override bool IsConnected
+        {
+            get { return Link != null; }
+        }
+        public override event Action ConnectionClosed;
     }
 }

@@ -14,21 +14,21 @@ namespace Xintric.DataRouter.Core
         }
 
 
-        static Dictionary<object, Func<Connection.ICommand, CommandFilterResult>> commandtranslator = new Dictionary<object, Func<Connection.ICommand, CommandFilterResult>>();
-        public static void RegisterOnCommand<TCommand>(this IConnection connection, Func<TCommand, CommandFilterResult> cmd) where TCommand : class, Connection.ICommand
+        static Dictionary<object, Func<Connection.ICommand, Connection.Command.FilterResult>> commandtranslator = new Dictionary<object, Func<Connection.ICommand, Connection.Command.FilterResult>>();
+        public static void RegisterOnCommand<TCommand>(this IConnection connection, Func<TCommand, Connection.Command.FilterResult> cmd) where TCommand : class, Connection.ICommand
         {
             lock (commandtranslator)
             {
-                var obj = new Func<Connection.ICommand, CommandFilterResult>(c =>
+                var obj = new Func<Connection.ICommand, Connection.Command.FilterResult>(c =>
                 {
-                    if (!(c is TCommand)) return CommandFilterResult.PassOnToNext;
+                    if (!(c is TCommand)) return Connection.Command.FilterResult.PassOnToNext;
                     return cmd(c as TCommand);
                 });
                 commandtranslator.Add(cmd, obj);
                 connection.RegisterOnCommand(obj);
             }
         }
-        public static void UnregisterOnCommand<TCommand>(this IConnection connection, Func<TCommand, CommandFilterResult> cmd) where TCommand : class, Connection.ICommand
+        public static void UnregisterOnCommand<TCommand>(this IConnection connection, Func<TCommand, Connection.Command.FilterResult> cmd) where TCommand : class, Connection.ICommand
         {
             lock (commandtranslator)
             {

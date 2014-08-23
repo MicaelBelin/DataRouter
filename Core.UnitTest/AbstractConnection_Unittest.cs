@@ -59,102 +59,92 @@ namespace Xintric.DataRouter.Core.UnitTest
         // [ClassCleanup()]
         // public static void MyClassCleanup() { }
         //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
+        [TestInitialize()]
+        public void MyTestInitialize()        
+        {
+
+            var pair = Connection.P2P.GeneratePair(provider);
+            Connection1 = pair.Item1;
+            Connection2 = pair.Item2;
+
+            runnertask1 = Task.Run(() => Connection1.RunCollector());
+            runnertask2 = Task.Run(() => Connection2.RunCollector());
+        }
+
+        IConnection Connection1;
+        IConnection Connection2;
+        Task runnertask1, runnertask2;
+
+
+        [TestCleanup()]
+        public void MyTestCleanup()
+        {
+            Connection1.Dispose();
+            Connection2.Dispose();
+            runnertask1.Wait();
+            runnertask2.Wait();
+            //Assert.IsTrue(runnertask1.Wait(TimeSpan.FromMilliseconds(5000)));
+            //Assert.IsTrue(runnertask2.Wait(TimeSpan.FromMilliseconds(5000)));
+        }
         #endregion
 
+
         [TestMethod]
-        public void StartAndStopRunner()
+        public void StopCollectorWhenDisposed()
         {
-            var pair = Core.Connection.P2P.GeneratePair(provider);
+            Connection1.Dispose();
+            Assert.IsTrue(runnertask1.Wait(TimeSpan.FromSeconds(60)));
+        }
 
-            var collectortask = Task.Run(() =>
-                {
-                    pair.Item1.RunCollector();
-                });
+        [TestMethod]
+        public void StopCollectorWhenClosed()
+        {
+            Connection2.Dispose();
+            Assert.IsTrue(runnertask1.Wait(TimeSpan.FromSeconds(60)));
+        }
 
-
-            pair.Item1.Dispose();
-
-            Assert.IsTrue(collectortask.Wait(TimeSpan.FromMilliseconds(200)));
-
+        [TestMethod]
+        public void StartupShutdown()
+        {
         }
 
         [TestMethod]
         public void CommandPassthrough()
         {
-            var pair = Core.Connection.P2P.GeneratePair(provider);
-
-            var item1runner = Task.Run(() =>
-                {
-                    pair.Item1.RunCollector();
-                });
-            var item2runner = Task.Run(() =>
-                {
-                    pair.Item2.RunCollector();
-                });
 
             var gotcommand = new AutoResetEvent(false);
             
-            pair.Item2.RegisterOnCommand(cmd =>
+            Connection2.RegisterOnCommand(cmd =>
                 {
                     gotcommand.Set();
-                    return CommandFilterResult.Consume;
+                    return Connection.Command.FilterResult.Consume;
                 });
 
-            pair.Item1.SendAsync(new TestCommand("hej!")).FireAndForget();
+            Connection1.SendAsync(new TestCommand("hej!")).FireAndForget();
 
-            Assert.IsTrue(gotcommand.WaitOne(TimeSpan.FromMilliseconds(200)));
+            Assert.IsTrue(gotcommand.WaitOne(TimeSpan.FromSeconds(30)));
 
-            pair.Item1.Dispose();
-            pair.Item2.Dispose();
-
-
-            Assert.IsTrue(item1runner.Wait(TimeSpan.FromMilliseconds(200)));
-            Assert.IsTrue(item2runner.Wait(TimeSpan.FromMilliseconds(200)));
         }
 
         [TestMethod]
         public void RequestPassthrough()
         {
-            var pair = Core.Connection.P2P.GeneratePair(provider);
 
-            var item1runner = Task.Run(() =>
-                {
-                    pair.Item1.RunCollector();
-                });
-            var item2runner = Task.Run(() =>
-                {
-                    pair.Item2.RunCollector();
-                });
-
-            pair.Item2.RegisterOnRequest(req =>
+            Connection2.RegisterOnRequest(req =>
                 {
                     return new TestResponse("tillbaka!");
                 });
 
             var gotcommand = new AutoResetEvent(false);
 
-            var reqtask = pair.Item1.SendAsync(new TestRequest("hej!"));
+            var reqtask = Connection1.SendAsync(new TestRequest("hej!"));
 
-            Assert.IsTrue(reqtask.Wait(TimeSpan.FromMilliseconds(200)));
+            Assert.IsTrue(reqtask.Wait(TimeSpan.FromSeconds(30)));
 
             var result = reqtask.Result as TestResponse;
             Assert.AreEqual("tillbaka!", result.Message);
 
 
-            pair.Item1.Dispose();
-            pair.Item2.Dispose();
-
-
-            Assert.IsTrue(item1runner.Wait(TimeSpan.FromMilliseconds(200)));
-            Assert.IsTrue(item2runner.Wait(TimeSpan.FromMilliseconds(200)));
             
         }
     }

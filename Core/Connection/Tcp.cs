@@ -41,5 +41,12 @@ namespace Xintric.DataRouter.Core.Connection
         {
             Dispose();
         }
+
+        public override bool IsConnected
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override event Action ConnectionClosed;
     }
 }

@@ -60,6 +60,7 @@
     <Compile Include="TestRequest.cs" />
     <Compile Include="TestResponse.cs" />
     <Compile Include="AbstractConnection_Unittest.cs" />
+    <Compile Include="SerialUsage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">

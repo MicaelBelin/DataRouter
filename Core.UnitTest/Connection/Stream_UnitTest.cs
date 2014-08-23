@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 using System.IO;
+using System.Threading;
 
 namespace Xintric.DataRouter.Core.Connection.UnitTest
 {
@@ -16,9 +17,7 @@ namespace Xintric.DataRouter.Core.Connection.UnitTest
     {
         public Stream_UnitTest()
         {
-            //
-            // TODO: Add constructor logic here
-            //
+            provider.Populate();
         }
 
         private TestContext testContextInstance;
@@ -52,31 +51,44 @@ namespace Xintric.DataRouter.Core.Connection.UnitTest
         // public static void MyClassCleanup() { }
         //
         // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
+        [TestInitialize()]
+        public void MyTestInitialize() 
+        {
+            var pair = P2P.GeneratePair(provider);
+            Connection1 = pair.Item1;
+            Connection2 = pair.Item2;
+
+            runnertask1 = Task.Run(() => Connection1.RunCollector());
+            runnertask2 = Task.Run(() => Connection2.RunCollector());
+        }
+
+        IConnection Connection1;
+        IConnection Connection2;
+        Task runnertask1, runnertask2;
+
+        Core.Connection.Packet.Provider.Implementation provider = new Core.Connection.Packet.Provider.Implementation();
         //
         // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
+        [TestCleanup()]
+        public void MyTestCleanup() 
+        {
+            Connection1.Dispose();
+            Connection2.Dispose();
+            runnertask1.Wait();
+            runnertask2.Wait();
+            //Assert.IsTrue(runnertask1.Wait(TimeSpan.FromMilliseconds(5000)));
+            //Assert.IsTrue(runnertask2.Wait(TimeSpan.FromMilliseconds(5000)));
+        }
         //
         #endregion
 
         [TestMethod]
-        public void TestMethod1()
+        public void SendAndRecieve()
         {
-            var provider = new Core.Connection.Packet.Provider.Implementation();
-            provider.Populate();
 
 
-            var pair = P2P.GeneratePair(provider);
-
-
-            var runner1 = Task.Run(() => pair.Item1.RunCollector());
-            var runner2 = Task.Run(() => pair.Item2.RunCollector());
-
-
-            using (var stream1 = new Stream(1, pair.Item1))
-            using (var stream2 = new Stream(1, pair.Item2))
+            using (var stream1 = new Stream(1, Connection1))
+            using (var stream2 = new Stream(1, Connection2))
             {
 
                 var rtask = Task<Tuple<string, int, byte[]>>.Run(() =>
@@ -97,24 +109,55 @@ namespace Xintric.DataRouter.Core.Connection.UnitTest
                     writer.Write(new byte[] { 51, 0, 0, 56, 48 });
                 }
 
-                Assert.IsTrue(rtask.Wait(TimeSpan.FromMilliseconds(100)));
+                Assert.IsTrue(rtask.Wait(TimeSpan.FromSeconds(30)));
 
                 Assert.AreEqual("hej som fan!", rtask.Result.Item1);
                 Assert.AreEqual(56, rtask.Result.Item2);
                 Assert.IsTrue((new byte[] { 51, 0, 0, 56, 48 }).Zip(rtask.Result.Item3, (a, b) => a == b).All(x=>x));
 
-                pair.Item1.Dispose();
-                pair.Item2.Dispose();
-
-                Assert.IsTrue(runner1.Wait(TimeSpan.FromMilliseconds(200)));
-                Assert.IsTrue(runner2.Wait(TimeSpan.FromMilliseconds(200)));
 
             }
+        }
+
+        [TestMethod]
+        public void ReadUntilClosed()
+        {
 
 
-            //
-            // TODO: Add test logic here
-            //
+            using (var stream1 = new Stream(1, Connection1))
+            using (var stream2 = new Stream(1, Connection2))
+            {
+
+                var rtask = Task<int>.Run(() =>
+                {
+                    var buf = new byte[1024];
+
+                    var ret = new byte[] { };
+                    while(true)
+                    {
+                        var bytesread = stream2.Read(buf, 0, 1024);
+                        if (bytesread == 0) break;
+                        ret = ret.Concat(buf.Take(bytesread)).ToArray();
+                    };
+                    return ret;
+                });
+
+                stream1.Write(new byte[] { 1, 2, 3, 4 }, 0, 4);
+
+                Assert.IsFalse(rtask.IsCompleted);
+
+                stream1.Write(new byte[] { 5, 6, 7 }, 0, 3);
+
+                stream1.Dispose();
+
+                Assert.IsTrue(rtask.Wait(TimeSpan.FromSeconds(30)), "Reader haven't received a stop in time");
+
+                Assert.AreEqual(7, rtask.Result.Count());
+
+
+
+            }
+            
         }
     }
 }

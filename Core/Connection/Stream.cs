@@ -12,8 +12,12 @@ namespace Xintric.DataRouter.Core.Connection
         public long Id { get; private set; }
         public IConnection Connection { get; private set; }
 
+
+        public bool EOF { get; private set; }
+
         public Stream(long id, IConnection connection)
         {
+            EOF = false;
             Id = id;
             Connection = connection;
 
@@ -22,9 +26,20 @@ namespace Xintric.DataRouter.Core.Connection
                     if (cmd.Id == Id)
                     {
                         AddToReadBuffer(cmd.Data);
-                        return CommandFilterResult.Consume;
+                        return Core.Connection.Command.FilterResult.Consume;
                     }
-                    else return CommandFilterResult.PassOnToNext;
+                    else return Core.Connection.Command.FilterResult.PassOnToNext;
+                });
+
+            Connection.RegisterOnCommand<EOFPacket>(cmd =>
+                {
+                    if (cmd.Id == Id)
+                    {
+                        EOF = true;
+                        lock (buffermutex) Monitor.Pulse(buffermutex);
+                        return Core.Connection.Command.FilterResult.Consume;
+                    }
+                    else return Core.Connection.Command.FilterResult.PassOnToNext;
                 });
 
         }
@@ -79,11 +94,15 @@ namespace Xintric.DataRouter.Core.Connection
         {
             if (disposed) return;
             disposed = true;
+            if (Connection.IsConnected)
+            {
+                Connection.SendAsync(new EOFPacket(Id));
+            }
             lock (buffermutex)
             {
-                Monitor.PulseAll(buffermutex);
+                EOF = true;
+                Monitor.PulseAll(buffermutex); //Tell readers to read remaining items, then close
             }
-
             base.Dispose(disposing);
         }
 
@@ -93,7 +112,7 @@ namespace Xintric.DataRouter.Core.Connection
             {
                 while (buffer.Length == 0)
                 {
-                    if (disposed) return 0;
+                    if (disposed || !Connection.IsConnected || EOF) return 0;
                     Monitor.Wait(buffermutex);
                 }
 

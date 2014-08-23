@@ -24,6 +24,7 @@ namespace Xintric.DataRouter.Core.Connection.Packet.Provider
         public void Populate()
         {
             RegisterFactory(Connection.Stream.DataPacket.FactoryInstance);
+            RegisterFactory(Connection.Stream.EOFPacket.FactoryInstance);
         }
 
     }
