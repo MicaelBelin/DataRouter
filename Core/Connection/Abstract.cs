@@ -81,7 +81,12 @@ namespace Xintric.DataRouter.Core.Connection
             }
             if (gotresponse)
             {
-                return response;
+                if (response is Packet.Exception)
+                {
+                    throw response as Packet.Exception; //Convert this packet to an exception!
+                }
+                else
+                    return response;
             }
             else
             {
@@ -147,8 +152,13 @@ namespace Xintric.DataRouter.Core.Connection
                                         SendDataPacketAsync(Wrap(ret, GenerateId(), packet.Id)).FireAndForget();
                                     }
                                 }
+                                catch (Connection.Packet.Exception packetexception)
+                                {
+                                    SendDataPacketAsync(Wrap(packetexception, GenerateId(), packet.Id)).FireAndForget();
+                                }
                                 catch (Exception)
                                 {
+                                    SendDataPacketAsync(Wrap(new Packet.ResponseException(), GenerateId(), packet.Id)).FireAndForget();
                                     //TODO: Log!
                                 }
                             }

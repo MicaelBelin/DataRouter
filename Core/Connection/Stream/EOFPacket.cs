@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Xintric.DataRouter.Core.Connection
 {
-    [Connection.Packet.AutoGenerateFactory]
     public partial class Stream
     {
+        [Connection.Packet.AutoGenerateFactory]
         public class EOFPacket : Connection.ICommand
         {
             public long Id { get; private set; }

@@ -47,9 +47,11 @@
     <Compile Include="Connection\IResponse.cs" />
     <Compile Include="Connection\P2P.cs" />
     <Compile Include="Connection\Packet\AutoGenerateFactoryAttribute.cs" />
+    <Compile Include="Connection\Packet\Exception.cs" />
     <Compile Include="Connection\Packet\IFactory.cs" />
     <Compile Include="Connection\Packet\IProvider.cs" />
     <Compile Include="Connection\Packet\Provider\Implementation.cs" />
+    <Compile Include="Connection\Packet\ResponseException.cs" />
     <Compile Include="Connection\Stream\DataPacket.cs" />
     <Compile Include="Connection\Stream\EOFPacket.cs" />
     <Compile Include="Connection\Tcp.cs" />
@@ -66,6 +68,7 @@
     <Compile Include="IAgent.cs" />
     <Compile Include="Session\FriendRequestListener\IFriendRequest.cs" />
     <Compile Include="Session\IFriendRequestListener.cs" />
+    <Compile Include="Session\Packet\StreamRequestDeniedException.cs" />
     <Compile Include="Session\Session_Implementation.cs" />
     <Compile Include="Session\IStreamRequest.cs" />
     <Compile Include="Session\Packet\CreateStreamRequest.cs" />

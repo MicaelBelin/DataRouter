@@ -57,6 +57,7 @@
     <Compile Include="Connection\Stream_UnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestCommand.cs" />
+    <Compile Include="TestException.cs" />
     <Compile Include="TestRequest.cs" />
     <Compile Include="TestResponse.cs" />
     <Compile Include="AbstractConnection_Unittest.cs" />

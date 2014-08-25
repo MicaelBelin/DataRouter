@@ -18,7 +18,7 @@ namespace Xintric.DataRouter.Core.UnitTest
             //
             // TODO: Add constructor logic here
             //
-            provider = new Core.Connection.Packet.Provider.Implementation();
+            provider = new Core.Connection.Packet.Provider.Implementation(Core.Connection.Packet.Provider.Implementation.AutoGenerateFlags.ScanEntireDomain);
 
             provider.RegisterFactory(TestCommand.FactoryInstance);
             provider.RegisterFactory(TestRequest.FactoryInstance);
@@ -143,9 +143,57 @@ namespace Xintric.DataRouter.Core.UnitTest
 
             var result = reqtask.Result as TestResponse;
             Assert.AreEqual("tillbaka!", result.Message);
-
-
             
         }
+
+
+        [TestMethod]
+        [ExpectedException(typeof(Core.Connection.Packet.ResponseException))]
+        public void ThrowSystemException()
+        {
+
+            Connection2.RegisterOnRequest<TestRequest>(req =>
+                {
+                    throw new Exception();
+                });
+
+            var task = Connection1.SendAsync(new TestRequest("hej!"), TimeSpan.FromSeconds(30));
+
+            try
+            {
+                task.Wait();
+            }
+            catch (AggregateException e)
+            {
+                throw e.InnerException;
+            }
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(TestException))]
+        public void ThrowPacketException()
+        {
+
+            Connection2.RegisterOnRequest<TestRequest>(req =>
+            {
+                throw new TestException();
+            });
+
+            var task = Connection1.SendAsync(new TestRequest("hej!"), TimeSpan.FromSeconds(30));
+
+            try
+            {
+                task.Wait();
+            }
+            catch (AggregateException e)
+            {
+                throw e.InnerException;
+            }
+
+        }
+
+
+
     }
 }
