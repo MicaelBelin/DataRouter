@@ -55,34 +55,9 @@
     <Compile Include="Connection\Stream\DataPacket.cs" />
     <Compile Include="Connection\Stream\EOFPacket.cs" />
     <Compile Include="Connection\Tcp.cs" />
-    <Compile Include="Forum\Interface\Admin\Admin_IMessage.cs" />
-    <Compile Include="Forum\IMessage.cs" />
-    <Compile Include="Forum\Interface\Admin\IInvitationRequest.cs" />
-    <Compile Include="Forum\Interface\Admin\IRequest.cs" />
-    <Compile Include="Forum\Interface\User\IRequest.cs" />
     <Compile Include="IConnection.cs" />
-    <Compile Include="IDownloadItem.cs" />
-    <Compile Include="ISession.cs" />
-    <Compile Include="Forum\Interface\User\User_IMessage.cs" />
-    <Compile Include="Forum\Interface\IUser.cs" />
-    <Compile Include="IAgent.cs" />
-    <Compile Include="Session\FriendRequestListener\IFriendRequest.cs" />
-    <Compile Include="Session\IFriendRequestListener.cs" />
-    <Compile Include="Session\Packet\StreamRequestDeniedException.cs" />
-    <Compile Include="Session\Session_Implementation.cs" />
-    <Compile Include="Session\IStreamRequest.cs" />
-    <Compile Include="Session\Packet\CreateStreamRequest.cs" />
-    <Compile Include="Session\Packet\CreateStreamResponse.cs" />
-    <Compile Include="Session\Packet\HandshakeRequest.cs" />
-    <Compile Include="Session\Packet\HandshakeResponse.cs" />
-    <Compile Include="Session\Packet\ListFriendsRequest.cs" />
-    <Compile Include="Session\Packet\ListFriendsResponse.cs" />
-    <Compile Include="Session\Packet\Template.cs" />
-    <Compile Include="Session\Packet\UnfriendCommand.cs" />
     <Compile Include="Connection\Stream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Agent\Agent_Implementation.cs" />
-    <Compile Include="Forum\Interface\IAdmin.cs" />
     <Compile Include="TaskExtensions.cs" />
   </ItemGroup>
   <ItemGroup />
